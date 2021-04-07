@@ -41,7 +41,7 @@ class AVR:
         self.pinMapping = {}
         self.bp = gdb.Breakpoint(source='main.c',line=while1)
         #self.bp.commands = '\n'.join(['silent']) #TODO: Verbosity?
-        self.bp.enabled = True
+        self.bp.enabled = True 
         self.watchList = []
 
     def __str__(self):
