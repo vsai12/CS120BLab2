@@ -14,28 +14,33 @@
 
 int main(void) {
         DDRA = 0x00; PORTA = 0xFF; //configure portA as inputs
-        DDRC = 0xFF; PORTC = 0x00; //configure portC as outputs
+	DDRB = 0x00; PORTB = 0xFF; //configure portB as inputs
+	DDRC = 0x00; PORTC = 0xFF; //configure portC as inputs
+        DDRD = 0xFF; PORTD = 0x00; //configure portD as outputs
 
-        unsigned char tmpA = 0x00; //temp var to hold value of A
-	unsigned char tmpC = 0x00; //temp var to hold value of C
-	unsigned char cntavail = 0x00; //count of available spots
         while (1) {
-		cntavail = 0; //reset count
-		tmpA = PINA & 0x0F; //mask to get PA0, PA1, PA2, PA3
-		if((tmpA & 0x01) == 0x00) //checks if PA0 is 0
-			cntavail++;
-		if((tmpA & 0x02) == 0x00) //checks if PA1 is 0
-                        cntavail++;
-		if((tmpA & 0x04) == 0x00) //checks if PA2 is 0
-                        cntavail++;
-		if((tmpA & 0x08) == 0x00) //checks if PA3 is 0
-                        cntavail++;
-		tmpC = PORTC & 0xF0; //masks PORTC to set PC0, PC1, PC2, PC3 to 0 while rest unchanged 
-		if(cntavail == 0) //if full
-			tmpC = tmpC | 0x80; //sets PC7 to 1;
-		else
-			tmpC += cntavail;		
-		PORTC = tmpC;
+		unsigned char sum = 0x00; //varaible to hold sum weight of carts
+		unsigned char tmpD = 0x00; //temp var to hold value of D
+		if(PINA > 0x8C) //checks if cartA > 140
+			tmpD = tmpD | 0x01; //sets PD0 to 1;
+		else if(PINB > 0x8C) //checks if cartB > 140
+                        tmpD = tmpD | 0x01; //sets PD0 to 1;
+		else if(PINC > 0x8C) //checks if cartC > 140
+                        tmpD = tmpD | 0x01; //sets PD0 to 1;
+
+		if(PINA > PINC) {
+			if(PINA - PINC > 0x50)
+				tmpD = tmpD | 0x02; //sets PD1 to 1
+			
+		}
+		else if(PINC - PINA > 0x50)
+			tmpD = tmpD | 0x02; //sets PD1 to 1
+		
+		sum = PINA + PINB + PINC;
+		sum = sum & 0xFC; //sets last 2 bits of sum to 0
+		tmpD = sum | tmpD; //copies the first 6 bits of sum into tmpD
+		PORTD = tmpD;
+		
         }
         return 1;
 }
