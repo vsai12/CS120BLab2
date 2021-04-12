@@ -14,21 +14,17 @@
 # An example set of tests is shown below. It is important to note that these tests are not "unit tests" in 
 # that they are not ran in isolation but in the order shown and the state of the device is not reset or 
 # altered in between executions (unless preconditions are used).
-tests = [ {'description': 'PINA: 0x28, PINB: 0x28, PINC: 0x28 => PORTD: 0x78, no overweight',
-    'steps': [ {'inputs': [('PINA',0x28), ('PINB',0x28), ('PINC',0x28)], 'iterations': 5 } ],
-    'expected': [('PORTD',0x78)],
+tests = [ {'description': 'PINA: 0x40, PINB: 0x40, PINC: 0x40 => PORTD: 0x31',
+    'steps': [ {'inputs': [('PINA',0x40), ('PINB',0x40), ('PINC',0x40)], 'iterations': 5 } ],
+    'expected': [('PORTD',0x31)],
     },
-	{'description': 'PINA: 0x28, PINB: 0xA0, PINC: 0x28 => PORTD: 0xF1, one overweight',
+	{'description': 'PINA: 0x00, PINB: 0x23, PINC: 0x55 => PORTD: 0x1E',
     'steps': [ {'inputs': [('PINA',0x28), ('PINB',0xA0), ('PINC',0x28)], 'iterations': 5 } ],
-    'expected': [('PORTD',0xF1)],
+    'expected': [('PORTD',0x1E)],
     },
-	{'description': 'PINA: 0x78, PINB: 0x28, PINC: 0x14 => PORTD: 0xB6, exceed diff',
+	{'description': 'PINA: 0x00, PINB: 0x38, PINC: 0x55 => PORTD: 0x22',
     'steps': [ {'inputs': [('PINA',0x78), ('PINB',0x28), ('PINC',0x14)], 'iterations': 5 } ],
-    'expected': [('PORTD',0xB6)],
-    },
-	{'description': 'PINA: 0xA0, PINB: 0x28, PINC: 0x28 => PORTD: 0xF3, one overweight, exceed diff',
-    'steps': [ {'inputs': [('PINA',0xA0), ('PINB',0x28), ('PINC',0x28)], 'iterations': 5 } ],
-    'expected': [('PORTD',0xF3)],
+    'expected': [('PORTD',0x22)],
     },
     ]
 #watch = ['PORTB']
